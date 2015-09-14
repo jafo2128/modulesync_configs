@@ -1,11 +1,9 @@
 ModuleSync Configs
 ==================
 
-This repository contains default configuration for
-[modulesync](http://github.com/puppetlabs/modulesync) for the Puppet Labs
-puppet modules. Changes to this repository should be synced with modulesync
-across all of the Puppet Labs modules. It can also be used as an example for
-creating default configuration for other community modules.
+This repository contains my
+[modulesync](http://github.com/puppetlabs/modulesync) configs. It is forked
+from [puppetlabs/modulesync_configs](https://github.com/puppetlabs/modulesync_configs).
 
 A full description of ModuleSync can be found in [ModuleSync's
 README](https://github.com/puppetlabs/modulesync). This README describes how
