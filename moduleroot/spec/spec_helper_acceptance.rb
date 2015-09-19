@@ -20,7 +20,7 @@ RSpec.configure do |c|
       on h, 'pacman -Syu --noconfirm'
     end
     # Install module and dependencies
-    puppet_module_install(:source => proj_root, :module_name => '<% @puppet_module -%>', :target_module_path => '/etc/puppetlabs/code/modules')
+    puppet_module_install(:source => proj_root, :module_name => '<%= @configs['module_name'] -%>', :target_module_path => '/etc/puppetlabs/code/modules')
     moddir = 'spec/fixtures/modules/*'
     if not File.exist?(File.join(proj_root, 'spec/fixtures/modules/stdlib'))
       puts "ERROR: please run 'rake spec_prep' first"
