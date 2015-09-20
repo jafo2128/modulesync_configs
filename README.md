@@ -15,7 +15,6 @@ Quickly Running
     gem install modulesync
     # symlink your module clones into modules/
     msync update --noop -f MODULE_NAME
-    # for workstation_bootstrap (default branch master): msync update --noop -b production -f bootstrap
 
 Configuring ModuleSync
 ----------------------
