@@ -12,7 +12,7 @@
     '*.pp': 'eol=lf'
     '*.sh': 'eol=lf'
 .travis.yml:
-  script: "\"bundle exec rake release_checks\""
+  script: "\"bundle exec rake release_checks_nonparallel\""
   docker_sets:
   - set: docker/ubuntu-14.04
   - set: docker/centos-7
