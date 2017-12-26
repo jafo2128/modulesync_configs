@@ -49,7 +49,9 @@ matrix:
 <%   end -%>
 <% end -%>
 notifications:
-  email: false
+  email:
+    on_success: change
+    on_failure: change
 <% if @configs['hipchat'] -%>
   hipchat:
     rooms:
