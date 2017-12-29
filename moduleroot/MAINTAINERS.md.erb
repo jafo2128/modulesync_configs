@@ -7,4 +7,4 @@ Maintainers:
 <%   end -%>
 <% end -%>
 
-Tickets: https://tickets.puppet.com/browse/MODULES. Make sure to set component to `<%= @configs[:puppet_module].gsub('puppetlabs-','') -%>`.
+Tickets: https://github.com/<%= @configs[:namespace] %>/<%= @configs['module_repos'][@configs[:puppet_module]] %>/issues

@@ -48,16 +48,41 @@ matrix:
 <%     end -%>
 <%   end -%>
 <% end -%>
+deploy:
+  - provider: pages
+    skip_cleanup: true
+    github_token:
+      secure: "<%= @configs['github_token'] %>"
+    local_dir: doc
+    on:
+      repo: <%= @configs[:namespace] %>/<%= @configs['module_repos'][@configs[:puppet_module]] %>
+      rvm: <%= @configs['includes'][0]['rvm'] %>
+      # all_branches is required to use tags
+      all_branches: true
+      tags: true
+  - provider: puppetforge
+    user: <%= @configs[:namespace] %>
+    password:
+      secure: "<%= @configs['puppetforge_password'] %>"
+    on:
+      repo: <%= @configs[:namespace] %>/<%= @configs['module_repos'][@configs[:puppet_module]] %>
+      rvm: <%= @configs['includes'][0]['rvm'] %>
+      # all_branches is required to use tags
+      all_branches: true
+      tags: true
 notifications:
   email:
     on_success: change
     on_failure: change
-<% if @configs['hipchat'] -%>
-  hipchat:
-    rooms:
-      secure: <%= @configs['hipchat'] %>
-    template:
-    - ! '%{repository}#%{build_number} (%{branch} - %{commit} : %{author}): %{message}'
-    - ! 'Change view: %{compare_url}'
-    - ! 'Build details: %{build_url}'
+<% if @configs['pushover'] -%>
+  pushover:
+    users:
+<%  @configs['pushover']['users'].each do |user| -%>
+      - secure: "<%= user %>"
+<%  end -%>
+    api_key:
+      secure: "<%= @configs['pushover']['api_key'] %>"
 <% end -%>
+branches:
+  except:
+  - "/^noci-.*$/"

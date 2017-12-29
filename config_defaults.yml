@@ -4,6 +4,14 @@
     jantman-archlinux_workstation:           [linux]
     jantman-archlinux_macbookretina:         [linux]
     jantman-workstation_bootstrap:           [linux]
+  module_repos:
+    jantman-archlinux_workstation:   puppet-archlinux-workstation
+    jantman-archlinux_macbookretina: puppet-archlinux-macbookretina
+    jantman-workstation_bootstrap:   workstation-bootstrap
+  module_names:
+    jantman-archlinux_workstation:   archlinux_workstation
+    jantman-archlinux_macbookretina: archlinux_macbookretina
+    jantman-workstation_bootstrap:   workstation_bootstrap
 
 .gitattributes:
   include:
@@ -14,20 +22,24 @@
 .travis.yml:
   script: "\"bundle exec rake release_checks_nonparallel\""
   docker_sets:
-  - set: docker/ubuntu-14.04
-  - set: docker/centos-7
+  - set: default
   docker_defaults:
     # values will replace @@SET@@ with the docker_sets' value
     rvm: 2.3.1
     sudo: required
     dist: trusty
     services: docker
-    env: PUPPET_INSTALL_TYPE=agent BEAKER_debug=true BEAKER_set=@@SET@@
+    env: PUPPET_INSTALL_TYPE=foss BEAKER_debug=true BEAKER_set=@@SET@@
     script: bundle exec rake beaker
   includes:
   - rvm: 2.4.1
     env: PUPPET_GEM_VERSION="~> 5.0"
     bundler_args: --without system_tests
+    script:
+      - "bundle exec rake release_checks_nonparallel"
+      - "bundle exec rake clean"
+      - "bundle exec rake build"
+      - "bundle exec rake docs"
   - rvm: 2.1.9
     env: PUPPET_GEM_VERSION="~> 4.0"
     bundler_args: --without system_tests
@@ -60,7 +72,11 @@ Gemfile:
         condition: "Gem::Version.new(RUBY_VERSION.dup) < Gem::Version.new('2.1.0')"
       - gem: fast_gettext
         condition: "Gem::Version.new(RUBY_VERSION.dup) >= Gem::Version.new('2.1.0')"
+      - gem: puppet-strings
     ':system_tests':
+      - gem: beaker-docker
+        git: 'https://github.com/jantman/beaker-docker.git'
+        branch: 'archlinux'
       # Gems built using puppet-module-gems utility
       - gem: 'puppet-module-posix-system-r#{minor_version}'
         platforms: 'ruby'
@@ -82,7 +98,10 @@ Gemfile:
         from_env: 'BEAKER_ABS_VERSION'
         version: '~> 0.1'
       - gem: puppet-blacksmith
-        version: '~> 3.4'
+        version: '>= 4.1.1'
+      - gem: vandamme
+      - gem: octokit
+        version: '~> 4.0'
 appveyor.yml:
   appveyor_bundle_install: "bundle install --jobs 4 --retry 2 --without system_tests"
   matrix:
@@ -134,9 +153,4 @@ locales/config.yaml:
     - './lib/**/*.rb'
 
 spec/spec_helper.rb:
-spec/acceptance/nodesets/centos-7-x64.yml:
-spec/acceptance/nodesets/debian-8-x64.yml:
 spec/acceptance/nodesets/default.yml:
-spec/acceptance/nodesets/docker/centos-7.yml:
-spec/acceptance/nodesets/docker/debian-8.yml:
-spec/acceptance/nodesets/docker/ubuntu-14.04.yml:
