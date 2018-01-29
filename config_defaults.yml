@@ -75,8 +75,7 @@ Gemfile:
       - gem: puppet-strings
     ':system_tests':
       - gem: beaker-docker
-        git: 'https://github.com/jantman/beaker-docker.git'
-        branch: 'archlinux'
+        version: '>= 0.3.0'
       # Gems built using puppet-module-gems utility
       - gem: 'puppet-module-posix-system-r#{minor_version}'
         platforms: 'ruby'
